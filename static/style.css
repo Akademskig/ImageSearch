@@ -1,0 +1,12 @@
+.wrapper {
+  margin: auto;
+  width: 50%;
+}
+h1 {
+  text-align: center;
+  text-decoration: underline;
+  padding-bottom: 15px;
+}
+li {
+  font-size: 20px;
+}
