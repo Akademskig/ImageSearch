@@ -6,7 +6,6 @@ var path = require('path');
 var stylus = require('stylus');
 var request = require('request');
 
-
 var html= path.join(__dirname, "views/index.html");
 var styles = path.join(__dirname);
 
@@ -19,11 +18,7 @@ app.get('/', function(req,res){
     res.sendFile(html);
 })
 
-
 app.get("/api/search/:query", function(req,resp){
-    console.log(req.params.query);
-    console.log(req.query);
-    
     mongo.connect(mongourl, function(err,db){
         if(err){
             throw err;
@@ -39,10 +34,7 @@ app.get("/api/search/:query", function(req,resp){
                 }
                console.log(data);
             });
-            
     });
-    
-    
     var opts= {
         url:"https://api.cognitive.microsoft.com/bing/v5.0/images/search?q="+ req.params.query+"&count=10",
         headers:{"Ocp-Apim-Subscription-Key":"638430516df34bdd8837d53ad0f0155d",
@@ -53,24 +45,18 @@ app.get("/api/search/:query", function(req,resp){
     
     if(req.query.offset){
         opts.url="https://api.cognitive.microsoft.com/bing/v5.0/images/search?q="+ req.params.query+"&count=10&offset="+req.query.offset;
-        
     }
-    
-        
-       request.get(opts, function(err,res, body){
-           if(err){
+    request.get(opts, function(err,res, body){
+        if(err){
             throw err;
-           }
-            var imgs = JSON.parse(res.body);
-            
-        
-            var queryResult=[];
-            imgs.value.forEach(function(val){
-                queryResult.push({"img": val.contentUrl, "snippet": val.hostPageDisplayUrl, "thumbnail": val.thumbnailUrl , "context":val.hostPageUrl })
-            })
-        
-            resp.send(queryResult);
-       });
+        }
+        var imgs = JSON.parse(res.body);
+        var queryResult=[];
+        imgs.value.forEach(function(val){
+            queryResult.push({"img": val.contentUrl, "snippet": val.hostPageDisplayUrl, "thumbnail": val.thumbnailUrl , "context":val.hostPageUrl })
+        })
+        resp.send(queryResult);
+    });
 });
         
 app.get("/api/recentsearches", function(req,res){
@@ -85,16 +71,8 @@ app.get("/api/recentsearches", function(req,res){
             }
             res.send(docs);
         });
-        
-    })
-})
-
-
-//"url":"http://www.bajiroo.com/wp-content/uploads/2013/06/funny-lol-cats-fun-pics-images-photos-pictures-5.jpg","snippet":"funny-lol-cats-fun-pics-images ...","thumbnail":"https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTUXCGnfYdIRdxb86GIz-VCaSsgmgG5uS27hMCq1IquRvSTd2zwQwtphXA","context":"http://www.bajiroo.com/33-funniest-lolcats-ever"
-
-
-
-
+    });
+});
 
 app.listen(process.env.PORT || 8080, function(){
     console.log("Listening on port: " + process.env.PORT);
