@@ -10,7 +10,7 @@ var html= path.join(__dirname, "views/index.html");
 var styles = path.join(__dirname);
 
 
-var mongourl = "mongodb://Akademskig:BibiiMami007@ds015909.mlab.com:15909/imagequerys";// || "mongodb://localhost:27017/data/db";
+var mongourl = process.env.MONGOLAB_URI;// || "mongodb://localhost:27017/data/db";
 
 app.use(stylus.middleware(styles));
 app.get(app.use(express.static(styles)));
