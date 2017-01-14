@@ -9,7 +9,7 @@ var request = require('request');
 var html= path.join(__dirname, "views/index.html");
 var styles = path.join(__dirname);
 
-var mongourl = process.env.MONGOLAB_URI || "mongodb://localhost:27017/searchQ";
+var mongourl = process.env.MONGOLAB_URI;// || "mongodb://localhost:27017/data/db";
 
 app.use(stylus.middleware(styles));
 app.get(app.use(express.static(styles)));
