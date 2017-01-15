@@ -5,8 +5,10 @@ var mongo = require('mongodb').MongoClient;
 var path = require('path');
 var stylus = require('stylus');
 var request = require('request');
+var multer = require('multer');
 
 var html= path.join(__dirname, "views/index.html");
+var fileData = path.join(__dirname, "views/fileData.html");
 var styles = path.join(__dirname);
 
 
@@ -14,6 +16,8 @@ var mongourl = process.env.MONGOLAB_URI;// || "mongodb://localhost:27017/data/db
 
 app.use(stylus.middleware(styles));
 app.get(app.use(express.static(styles)));
+
+//routers for image search
 
 app.get('/', function(req,res){
     res.sendFile(html);
@@ -74,6 +78,21 @@ app.get("/api/recentsearches", function(req,res){
         });
     });
 });
+
+//routers for file metadata 
+
+var upload = multer({dest:"./uploads"});
+
+app.get("/filemetadata",function(req,res){
+    res.sendFile(fileData);
+})
+
+app.post("/submitfile", upload.single('img'), function(req,res){
+    var imgSize="Uploaded img size: "+req.file.size;
+    res.json(imgSize);
+})
+
+//----------------------------
 
 app.listen(process.env.PORT || 8080, function(){
     console.log("Listening on port: " + process.env.PORT);
