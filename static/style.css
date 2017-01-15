@@ -2,6 +2,11 @@
   margin: auto;
   width: 50%;
 }
+
+.wrapperForm{
+  margin: auto;
+  width:30%;
+}
 h1 {
   text-align: center;
   text-decoration: underline;
@@ -9,10 +14,6 @@ h1 {
 }
 li,p {
   font-size: 20px;
-}
-
-input{
-  display: inline-block;
 }
 
 form{

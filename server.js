@@ -11,13 +11,11 @@ var html= path.join(__dirname, "views/index.html");
 var fileData = path.join(__dirname, "views/fileData.html");
 var styles = path.join(__dirname);
 
-
 var mongourl = process.env.MONGOLAB_URI;// || "mongodb://localhost:27017/data/db";
 
 app.use(stylus.middleware(styles));
 app.get(app.use(express.static(styles)));
 
-//routers for image search
 
 app.get('/', function(req,res){
     res.sendFile(html);
@@ -88,8 +86,14 @@ app.get("/filemetadata",function(req,res){
 })
 
 app.post("/submitfile", upload.single('img'), function(req,res){
-    var imgSize="Uploaded img size: "+req.file.size;
-    res.json(imgSize);
+    if(req.file == undefined){
+        res.redirect("/filemetadata")
+    }
+    else{
+        var imgSize="Uploaded img size: "+req.file.size;
+        res.json(imgSize);
+    }
+    
 })
 
 //----------------------------
